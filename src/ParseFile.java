@@ -6,8 +6,9 @@ import java.util.Scanner;
 public class ParseFile {
     //this method generates a ProcessGraph and store in ProcessGraph Class
     public static void generateGraph(File inputFile) {
+    	Scanner fileIn = null;
         try{
-            Scanner fileIn=new Scanner(inputFile);
+            fileIn=new Scanner(inputFile);
             int index=0;
             while(fileIn.hasNext()){
                 String line=fileIn.nextLine();
@@ -56,6 +57,10 @@ public class ParseFile {
         } catch (IllegalArgumentException e){
             System.out.println("Wrong input format!");
             e.printStackTrace();
+        } finally {
+        	if (fileIn != null) {
+        		fileIn.close();
+        	}
         }
     }
 

@@ -44,7 +44,20 @@ The native IDE used in this project is eclipse so you can just import the projec
 3. Run ProcessManagement.java from the IDE
 
 ### How it works
-
+```
+1. For each node, the program checks if it is runnable
+2. If it is, the program constructs a processBuilder to invoke the command inside the node
+3. The program will wait for the process to finish executing and return to the main program.
+4. After that, it will mark said node to be executed
+5. The program continues checking for other nodes until all nodes have been executed
+```
 #### Single Threaded Busywaiting
+The program that manages the processes works by checking all the nodes inside the graph. If the program detects that the node is eligible to run, it forks a seperate process to run said program and waits for the program to finish executing before continuing with other nodes.
 
-### Improvements
+
+### Limitations
+- only one process is executed at any given time, even though there may be multiple nodes that are eligible to run at a given time.
+### Possible Improvements
+- We can assign a thread on each node to check if it is runnable and execute it independently.
+    - The main thread will only be responsible to change the node status. Synchronization is needed in this case.
+- 
