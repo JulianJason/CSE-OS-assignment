@@ -1,4 +1,6 @@
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.util.IllegalFormatException;
 import java.util.Scanner;
 
 public class ParseFile {
@@ -11,8 +13,7 @@ public class ParseFile {
                 String line=fileIn.nextLine();
                 String[] quatiles= line.split(":");
                 if (quatiles.length!=4) {
-                    System.out.println("Wrong input format!");
-                    throw new Exception();
+                    throw new IllegalArgumentException();
                 }
 
                 //add this node
@@ -49,8 +50,11 @@ public class ParseFile {
 
                 index++;
             }
-        } catch (Exception e){
+        } catch (FileNotFoundException e){
             System.out.println("File not found!");
+            e.printStackTrace();
+        } catch (IllegalArgumentException e){
+            System.out.println("Wrong input format!");
             e.printStackTrace();
         }
     }
