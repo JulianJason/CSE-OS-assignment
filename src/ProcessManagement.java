@@ -40,47 +40,51 @@ public class ProcessManagement {
 
         // Print the graph information
         ProcessGraph.printGraph();
-        // Using index of ProcessGraph, loop through each ProcessGraphNode, to check whether it is ready to run
-        
-        // create an arraylist of nodes
-        ArrayList<ProcessGraphNode> nodesToRun = new ArrayList<ProcessGraphNode>();
-        for (ProcessGraphNode node : ProcessGraph.nodes) {
-        	nodesToRun.add(node);
-        }
-        // nodes
+
+        // check for all nodes until all are executed
         while(!ProcessGraph.allExecuted()) {
-            ListIterator<ProcessGraphNode> nodeIterator = nodesToRun.listIterator();
+        	
+        	// the reason I used list iterator here is because iterator can call it.remove().
+        	// initially I had an array copy of all nodes and the while condition is if !copiedlist.isEmpty()
+            ListIterator<ProcessGraphNode> nodeIterator = ProcessGraph.nodes.listIterator();
+            // check while list still has something after it
         	while (nodeIterator.hasNext()) {
         		ProcessGraphNode node = nodeIterator.next();
+        		// skip executed nodes
         		if (node.isExecuted()) {
         			continue;
         		}
+        		
+        		// if node parents has finished, set this node runnable
         		if (node.allParentsExecuted()) {
-        			System.out.println("setting node " + node.getNodeId() + " runnable");
             		node.setRunnable();
         		}
         		
         		if (node.isRunnable()) {
-                    // run the node
+                    // run the node by splitting commands
                     String[] commands = node.getCommand().split(" ");
                     ProcessBuilder pb = new ProcessBuilder(commands);
+                    
+                    // should we dedicate a directory?
 //                    File testDir = new File(System.getProperty("user.dir") + "/src/test");
 //                    if (!testDir.exists()) {
 //                    	testDir.mkdir();
 //                    }
 //                    pb.directory(testDir);
+                    
                     try {
                         System.out.println("process " + node.getNodeId() + " started");
                         System.out.println("command = "+ node.getCommand());
                         System.out.println("in = " + node.getInputFile() + "\t out = " + node.getOutputFile());
+                        
+                        
                         if (node.getInputFile().exists()) {
                             pb.redirectInput(node.getInputFile());
                         }else {
-                        	File infile = node.getInputFile();
-                        	infile.createNewFile();
-                        	infile.setReadable(true);
-                            pb.redirectOutput(node.getInputFile());
+                        	throw new IOException("Input file does not exist");
                         }
+                        
+                        // if output file is present, delete and create a new one
                         if (node.getOutputFile().exists()) {
                         	node.getOutputFile().delete();
                         }
@@ -88,21 +92,24 @@ public class ProcessManagement {
                     	outfile.createNewFile();
                     	outfile.setWritable(true);
                         pb.redirectOutput(outfile);
-                        }
+                        
+                        // show error on system out
+                    	pb.redirectErrorStream(true);
+                        // start process and wait for it (single threaded busy wait)
                         Process process = pb.start();
                         int errCode = process.waitFor();
-                        System.out.println("errcode " + errCode);
-                        //if (errCode == 0) {
+                        System.out.println("errcode " + errCode); // TODO delete later
+                        if (errCode == 0) {
                         	node.setExecuted();
-                        	
-                       // } else {
-                       // 	throw new IOException();
-                     //   }
-                        // fork process and wait, at the end remove node from nodes to run
+                        } else {
+                        	throw new Exception();
+                        }
                     } catch (IOException e) {
                         e.printStackTrace();
-                        System.out.println("could not get node streams");
                         return;
+                    } catch (Exception e) {
+                    	System.out.println(" there is an error in processing the commands");
+                    	return;
                     }
                 }
         	}
