@@ -6,7 +6,7 @@ import java.util.ListIterator;
 /*
  * Programming Assignment 1
  * Author : Jason Julian, Tasya Aditya Rukmana
- * ID : , 1001694
+ * ID : 1001693, 1001694
  * Date : 09/03/2017
  *
  * Single-threaded busy wait system
