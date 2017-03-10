@@ -14,17 +14,12 @@ import java.util.ListIterator;
  * concurrently running at a given time. (could be improved by implementing threading)
  * 
  * TODO:
- * - display unix perror message appropriately
+ * - display specific unix perror message
  * - Implement threading on each node
  *   - create a new process thread on each node that busywaits for isRunnable
  *   - if parents are all executed, run
  *   - on end call processmanagement that node has executed successfully, use synchronized locks
- * - DOCUMENTATIONS
- * - FUCKING FIX THE PARSEFILE GLOBAL THROW SHIT
  * 
- * TODO DOCUMENTATIONS:
- * - record how node id is always tied to index, but there is no safety measures for this
- * - record how process builder only checks the root directory of project
  * */
  
 public class ProcessManagement {
