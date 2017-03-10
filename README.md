@@ -3,7 +3,9 @@ A process management script that will run processes specified in an instruction 
 
 ### Author
 Jason Julian, 1001693
+
 Tasya Aditya Rukmana, 1001694
+
 09/03/2017
 
 ### Instruction File Format
@@ -57,7 +59,7 @@ The program that manages the processes works by checking all the nodes inside th
 
 ### Limitations
 - only one process is executed at any given time, even though there may be multiple nodes that are eligible to run at a given time.
+
 ### Possible Improvements
 - We can assign a thread on each node to check if it is runnable and execute it independently.
     - The main thread will only be responsible to change the node status. Synchronization is needed in this case.
-- 

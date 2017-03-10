@@ -13,8 +13,8 @@ import java.util.ListIterator;
  * Process waits for current running node to end before running another node, that means that no two nodes are 
  * concurrently running at a given time. (could be improved by implementing threading)
  * 
- * TODO:
- * - display specific unix perror message
+ * 
+ * Possible improvements:
  * - Implement threading on each node
  *   - create a new process thread on each node that busywaits for isRunnable
  *   - if parents are all executed, run
@@ -28,7 +28,7 @@ public class ProcessManagement {
     private static File currentDirectory = new File(System.getProperty("user.dir") + "/src");
     //set the instructions file
     // private static File instructionSet = new File("testproc.txt");
-//    private static File instructionSet = new File("graph-file");
+    // private static File instructionSet = new File("graph-file");
     private static File instructionSet = new File("graph-file1");
     public static Object lock=new Object();
 
@@ -94,6 +94,7 @@ public class ProcessManagement {
                         
                         // show error on system out
                     	pb.redirectErrorStream(true);
+                    	
                         // start process and wait for it (single threaded busy wait)
                         Process process = pb.start();
                         int errCode = process.waitFor();
