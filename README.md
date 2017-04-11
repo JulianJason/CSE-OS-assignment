@@ -63,3 +63,5 @@ The program that manages the processes works by checking all the nodes inside th
 ### Possible Improvements
 - We can assign a thread on each node to check if it is runnable and execute it independently.
     - The main thread will only be responsible to change the node status. Synchronization is needed in this case.
+- Currently the node id is always tied to index of the nodes arraylist, however there is no safety measure for this
+- Process builder will only check the root directory of the project and sometimes this is a bit inflexible
